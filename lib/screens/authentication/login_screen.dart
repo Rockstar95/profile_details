@@ -102,13 +102,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     bool isExist = await UserController().isUserExist(context, userProvider.userid);
 
-    setState(() {
-      isLoading = false;
-    });
-
     print("User Exist:$isExist");
 
     if(isExist) {
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (route) => false);
     }
     else {
@@ -122,6 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
         bool isSuccess = await UserController().createUser(context, userModel);
         MyPrint.printOnConsole("Insert User Success:${isSuccess}");
 
+        setState(() {
+          isLoading = false;
+        });
+
         if(isSuccess) {
           Snakbar().show_success_snakbar(context, "Registration Success");
           Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (route) => false);
@@ -132,6 +135,9 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
       else {
+        setState(() {
+          isLoading = false;
+        });
         AuthenticationController().logout();
         Snakbar().show_error_snakbar(context, "Account Not Exist");
       }

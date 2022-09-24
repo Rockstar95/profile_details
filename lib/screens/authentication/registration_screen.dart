@@ -96,13 +96,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     bool isExist = await UserController().isUserExist(context, userProvider.userid);
 
-    setState(() {
-      isLoading = false;
-    });
-
     print("User Exist:$isExist");
 
     if(isExist) {
+      setState(() {
+        isLoading = false;
+      });
       if(navigateToHomeIfExist) {
         Navigator.pushNamedAndRemoveUntil(context, MainPage.routeName, (route) => false);
       }
@@ -120,6 +119,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       userModel.createdTime = Timestamp.now();
       bool isSuccess = await UserController().createUser(context, userModel);
       MyPrint.printOnConsole("Insert User Success:${isSuccess}");
+
+      setState(() {
+        isLoading = false;
+      });
 
       if(isSuccess) {
         Snakbar().show_success_snakbar(context, "Registration Success");
